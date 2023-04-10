@@ -11,6 +11,35 @@ tekton:
     authorizationBearerToken: yourTokenHere
     dashboardBaseUrl: https://tekton-dashboard-openshift-pipelines.itzroks-666000qmn3-85z15f-6ccd7f378ae819553d37d5f2ee142bd6-0000.au-syd.containers.appdomain.cloud
 
+kubernetes:
+  serviceLocatorMethod:
+    type: 'multiTenant'
+  clusterLocatorMethods:
+    - type: 'config'
+      clusters:
+        - url: https://c100-e.au-syd.containers.cloud.ibm.com:30249
+          name: 'local-cluster'
+          authProvider: 'serviceAccount'
+          skipTLSVerify: true
+          serviceAccountToken: yourTokenHere
+          dashboardUrl: https://console-openshift-console.${OPENSHIFT_BASE_DOMAIN}
+          dashboardApp: openshift
+        - url: 'https://api.govtech.onetouchprovisioning.com:6443'
+          name: govtech
+          authProvider: 'serviceAccount'
+          skipTLSVerify: true
+          serviceAccountToken: yourTokenHere
+          dashboardUrl: https://console-openshift-console.apps.govtech.onetouchprovisioning.com
+          dashboardApp: openshift
+  customResources:
+    - group: 'route.openshift.io'
+      apiVersion: 'v1'
+      plural: 'routes'
+    - group: 'cluster.open-cluster-management.io'
+      apiVersion: 'v1'
+      plural: 'managedclusters'
+
+
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
   # See https://backstage.io/docs/auth/service-to-service-auth for
