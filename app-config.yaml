@@ -5,6 +5,12 @@ app:
 organization:
   name: My Company
 
+tekton:
+  - baseUrl: https://c100-e.au-syd.containers.cloud.ibm.com:30249
+    name: hub-cluster
+    authorizationBearerToken: yourTokenHere
+    dashboardBaseUrl: https://tekton-dashboard-openshift-pipelines.itzroks-666000qmn3-85z15f-6ccd7f378ae819553d37d5f2ee142bd6-0000.au-syd.containers.appdomain.cloud
+
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
   # See https://backstage.io/docs/auth/service-to-service-auth for
@@ -39,7 +45,7 @@ integrations:
     - host: github.com
       # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
       # about setting up the GitHub integration here: https://backstage.io/docs/getting-started/configuration#setting-up-a-github-integration
-      token: ${GITHUB_TOKEN}
+      token: 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
     ### Example for how to add your GitHub Enterprise instance using the API:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
@@ -75,27 +81,28 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location]
+    - allow:
+        - API
+        - Component
+        - Domain
+        - Location
+        - Resource
+        - System
   locations:
-    # Local example data, file locations are relative to the backend process, typically `packages/backend`
-    - type: file
-      target: ../../examples/entities.yaml
-
-    # Local example template
-    - type: file
-      target: ../../examples/template/template.yaml
+    # Add a location here to ingest it, for example from a URL:
+    #     - type: url
+    #       target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
+    #
+    # For local development you can use a file location instead:
+    #     - type: file
+    #       target: ../catalog-model/examples/all-components.yaml
+    #
+    # File locations are relative to the current working directory of the
+    # backend, for example packages/backend/.
+    - type: url
+      target: https://github.com/ce-apac-project-idp/backstage-idp-catalog/blob/main/all.yaml
       rules:
-        - allow: [Template]
-
-    # Local example organizational data
-    - type: file
-      target: ../../examples/org.yaml
-      rules:
-        - allow: [User, Group]
-
-    ## Uncomment these lines to add more example data
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
+        - allow: [Group, Template, User]
 
     ## Uncomment these lines to add an example org
     # - type: url
