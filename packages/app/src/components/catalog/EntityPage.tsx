@@ -222,7 +222,58 @@ const websiteEntityPage = (
 
     <EntityLayout.Route path="/tekton-pipelines-plugin" title="Tekton Pipelines">
    
-   <EntitySwitch>
+     <EntitySwitch>
+
+     <EntitySwitch.Case if={e => Boolean(isTektonCiAvailable(e))}>
+       <EntityTektonPipelinesContent />
+     </EntitySwitch.Case>
+
+     <EntitySwitch.Case>
+       <EmptyState
+         title="No Tekton Pipelines available for this entity"
+         missing="info"
+         description="You need to add the annotation 'tektonci/build-namespace' to your component if you want to enable the Tekton Pipelines for it."
+       />
+     </EntitySwitch.Case>
+
+   </EntitySwitch>
+
+ </EntityLayout.Route>
+  </EntityLayout>
+);
+
+const dbEntityPage = (
+  <EntityLayout>
+    <EntityLayout.Route path="/" title="Overview">
+      {overviewContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/ci-cd" title="CI/CD">
+      {cicdContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/dependencies" title="Dependencies">
+      <Grid container spacing={3} alignItems="stretch">
+        <Grid item md={6}>
+          <EntityDependsOnComponentsCard variant="gridItem" />
+        </Grid>
+        <Grid item md={6}>
+          <EntityDependsOnResourcesCard variant="gridItem" />
+        </Grid>
+      </Grid>
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/docs" title="Docs">
+      {techdocsContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/kubernetes" title="Kubernetes">
+      <EntityKubernetesContent refreshIntervalMs={10000} />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/tekton-pipelines-plugin" title="Tekton Pipelines">
+   
+     <EntitySwitch>
 
      <EntitySwitch.Case if={e => Boolean(isTektonCiAvailable(e))}>
        <EntityTektonPipelinesContent />
@@ -269,6 +320,10 @@ const componentPage = (
 
     <EntitySwitch.Case if={isComponentType('website')}>
       {websiteEntityPage}
+    </EntitySwitch.Case>
+
+    <EntitySwitch.Case if={isComponentType('database')}>
+      {dbEntityPage}
     </EntitySwitch.Case>
 
     <EntitySwitch.Case>{defaultEntityPage}</EntitySwitch.Case>
