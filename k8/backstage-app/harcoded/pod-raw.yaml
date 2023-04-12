@@ -1,0 +1,221 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: backstage
+  namespace: backstage
+  uid: 98d5f846-7105-47a7-8a58-5e2be0ecf841
+  resourceVersion: '19584086'
+  creationTimestamp: '2023-04-10T11:10:36Z'
+  labels:
+    app: backstage
+  annotations:
+    k8s.v1.cni.cncf.io/network-status: |-
+      [{
+          "name": "openshift-sdn",
+          "interface": "eth0",
+          "ips": [
+              "10.129.2.46"
+          ],
+          "default": true,
+          "dns": {}
+      }]
+    k8s.v1.cni.cncf.io/networks-status: |-
+      [{
+          "name": "openshift-sdn",
+          "interface": "eth0",
+          "ips": [
+              "10.129.2.46"
+          ],
+          "default": true,
+          "dns": {}
+      }]
+    openshift.io/scc: anyuid
+  managedFields:
+    - manager: Mozilla
+      operation: Update
+      apiVersion: v1
+      time: '2023-04-10T11:10:36Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:labels':
+            .: {}
+            'f:app': {}
+        'f:spec':
+          'f:containers':
+            'k:{"name":"backstage"}':
+              .: {}
+              'f:image': {}
+              'f:imagePullPolicy': {}
+              'f:name': {}
+              'f:ports':
+                .: {}
+                'k:{"containerPort":7007,"protocol":"TCP"}':
+                  .: {}
+                  'f:containerPort': {}
+                  'f:name': {}
+                  'f:protocol': {}
+              'f:resources': {}
+              'f:terminationMessagePath': {}
+              'f:terminationMessagePolicy': {}
+          'f:dnsPolicy': {}
+          'f:enableServiceLinks': {}
+          'f:restartPolicy': {}
+          'f:schedulerName': {}
+          'f:securityContext': {}
+          'f:terminationGracePeriodSeconds': {}
+    - manager: multus
+      operation: Update
+      apiVersion: v1
+      time: '2023-04-10T11:10:38Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            'f:k8s.v1.cni.cncf.io/network-status': {}
+            'f:k8s.v1.cni.cncf.io/networks-status': {}
+      subresource: status
+    - manager: kubelet
+      operation: Update
+      apiVersion: v1
+      time: '2023-04-10T11:10:50Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:status':
+          'f:conditions':
+            'k:{"type":"ContainersReady"}':
+              .: {}
+              'f:lastProbeTime': {}
+              'f:lastTransitionTime': {}
+              'f:status': {}
+              'f:type': {}
+            'k:{"type":"Initialized"}':
+              .: {}
+              'f:lastProbeTime': {}
+              'f:lastTransitionTime': {}
+              'f:status': {}
+              'f:type': {}
+            'k:{"type":"Ready"}':
+              .: {}
+              'f:lastProbeTime': {}
+              'f:lastTransitionTime': {}
+              'f:status': {}
+              'f:type': {}
+          'f:containerStatuses': {}
+          'f:hostIP': {}
+          'f:phase': {}
+          'f:podIP': {}
+          'f:podIPs':
+            .: {}
+            'k:{"ip":"10.129.2.46"}':
+              .: {}
+              'f:ip': {}
+          'f:startTime': {}
+      subresource: status
+spec:
+  restartPolicy: Always
+  serviceAccountName: default
+  imagePullSecrets:
+    - name: default-dockercfg-6zfcj
+  priority: 0
+  schedulerName: default-scheduler
+  enableServiceLinks: true
+  terminationGracePeriodSeconds: 30
+  preemptionPolicy: PreemptLowerPriority
+  nodeName: ip-10-0-141-30.ap-southeast-1.compute.internal
+  securityContext:
+    seLinuxOptions:
+      level: 's0:c27,c9'
+  containers:
+    - resources: {}
+      terminationMessagePath: /dev/termination-log
+      name: backstage
+      securityContext:
+        capabilities:
+          drop:
+            - MKNOD
+      ports:
+        - name: http
+          containerPort: 7007
+          protocol: TCP
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - name: kube-api-access-m7lvf
+          readOnly: true
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      terminationMessagePolicy: File
+      image: 'quay.io/marwan_attar_ibm/backstage-demo:v5'
+  serviceAccount: default
+  volumes:
+    - name: kube-api-access-m7lvf
+      projected:
+        sources:
+          - serviceAccountToken:
+              expirationSeconds: 3607
+              path: token
+          - configMap:
+              name: kube-root-ca.crt
+              items:
+                - key: ca.crt
+                  path: ca.crt
+          - downwardAPI:
+              items:
+                - path: namespace
+                  fieldRef:
+                    apiVersion: v1
+                    fieldPath: metadata.namespace
+          - configMap:
+              name: openshift-service-ca.crt
+              items:
+                - key: service-ca.crt
+                  path: service-ca.crt
+        defaultMode: 420
+  dnsPolicy: ClusterFirst
+  tolerations:
+    - key: node.kubernetes.io/not-ready
+      operator: Exists
+      effect: NoExecute
+      tolerationSeconds: 300
+    - key: node.kubernetes.io/unreachable
+      operator: Exists
+      effect: NoExecute
+      tolerationSeconds: 300
+status:
+  phase: Running
+  conditions:
+    - type: Initialized
+      status: 'True'
+      lastProbeTime: null
+      lastTransitionTime: '2023-04-10T11:10:36Z'
+    - type: Ready
+      status: 'True'
+      lastProbeTime: null
+      lastTransitionTime: '2023-04-10T11:10:50Z'
+    - type: ContainersReady
+      status: 'True'
+      lastProbeTime: null
+      lastTransitionTime: '2023-04-10T11:10:50Z'
+    - type: PodScheduled
+      status: 'True'
+      lastProbeTime: null
+      lastTransitionTime: '2023-04-10T11:10:36Z'
+  hostIP: 10.0.141.30
+  podIP: 10.129.2.46
+  podIPs:
+    - ip: 10.129.2.46
+  startTime: '2023-04-10T11:10:36Z'
+  containerStatuses:
+    - restartCount: 0
+      started: true
+      ready: true
+      name: backstage
+      state:
+        running:
+          startedAt: '2023-04-10T11:10:50Z'
+      imageID: >-
+        quay.io/marwan_attar_ibm/backstage-demo@sha256:d23dd56084b99c0cd4aa74b2084a08230eae8ad9c35e75aa3c59ff2086c29037
+      image: 'quay.io/marwan_attar_ibm/backstage-demo:v5'
+      lastState: {}
+      containerID: 'cri-o://a13f2015b09de9ee3d4ce14472762f08e538f59f1bf79e6fb68a566a7bab056e'
+  qosClass: BestEffort
+

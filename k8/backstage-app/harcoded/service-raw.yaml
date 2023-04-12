@@ -1,0 +1,72 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: backstage
+  namespace: backstage
+  uid: a22ddbb8-dc16-4642-a6e3-c171519553db
+  resourceVersion: '19551444'
+  creationTimestamp: '2023-04-10T10:12:08Z'
+  finalizers:
+    - service.kubernetes.io/load-balancer-cleanup
+  managedFields:
+    - manager: Mozilla
+      operation: Update
+      apiVersion: v1
+      time: '2023-04-10T10:12:08Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:spec':
+          'f:allocateLoadBalancerNodePorts': {}
+          'f:externalTrafficPolicy': {}
+          'f:internalTrafficPolicy': {}
+          'f:ports':
+            .: {}
+            'k:{"port":7007,"protocol":"TCP"}':
+              .: {}
+              'f:name': {}
+              'f:port': {}
+              'f:protocol': {}
+              'f:targetPort': {}
+          'f:selector': {}
+          'f:sessionAffinity': {}
+          'f:type': {}
+    - manager: kube-controller-manager
+      operation: Update
+      apiVersion: v1
+      time: '2023-04-10T10:12:11Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:finalizers':
+            .: {}
+            'v:"service.kubernetes.io/load-balancer-cleanup"': {}
+        'f:status':
+          'f:loadBalancer':
+            'f:ingress': {}
+      subresource: status
+spec:
+  clusterIP: 172.30.136.223
+  externalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ports:
+    - name: http
+      protocol: TCP
+      port: 7007
+      targetPort: http
+      nodePort: 32208
+  internalTrafficPolicy: Cluster
+  clusterIPs:
+    - 172.30.136.223
+  allocateLoadBalancerNodePorts: true
+  type: LoadBalancer
+  ipFamilyPolicy: SingleStack
+  sessionAffinity: None
+  selector:
+    app: backstage
+status:
+  loadBalancer:
+    ingress:
+      - hostname: >-
+          aa22ddbb8dc164642a6e3c171519553d-2070657013.ap-southeast-1.elb.amazonaws.com
+

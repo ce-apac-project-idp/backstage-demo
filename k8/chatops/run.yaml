@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  name: run-send-to-channel-slack
+spec:
+  params:
+  - name: token-secret
+    value: token-secret
+  - name: channel
+    value: D052R5VPELV
+  taskRef:
+    name: send-to-channel-slack
